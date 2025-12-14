@@ -1,0 +1,89 @@
+// Script.js
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    // 1. GESTION DU MENU MOBILE (Burger Menu)
+    const nav = document.getElementById('navbar');
+    const burger = document.querySelector('.burger');
+    const navLinks = document.querySelector('.nav-links');
+    const navItems = document.querySelectorAll('.nav-links li');
+
+    const navSlide = () => {
+        // Toggle Nav
+        burger.addEventListener('click', () => {
+            navLinks.classList.toggle('nav-active');
+            burger.classList.toggle('toggle');
+
+            // Animate Links
+            navItems.forEach((link, index) => {
+                if (link.style.animation) {
+                    link.style.animation = '';
+                } else {
+                    link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+                }
+            });
+        });
+        
+        // Fermer le menu après un clic de navigation
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navLinks.classList.remove('nav-active');
+                burger.classList.remove('toggle');
+            });
+        });
+    };
+
+    navSlide();
+
+
+    // 2. STICKY HEADER AVEC CHANGEMENT DE STYLE AU SCROLL
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            nav.classList.add('scrolled');
+        } else {
+            nav.classList.remove('scrolled');
+        }
+    });
+
+    // 3. ANIMATION DU COMPTEUR DE CHIFFRES CLÉS (Statistiques)
+    const counters = document.querySelectorAll('.stat-number');
+    const statsSection = document.querySelector('.stats-section');
+    let hasAnimated = false;
+
+    const startCounter = (counter) => {
+        const target = +counter.getAttribute('data-target');
+        const increment = target / 200; // Vitesse de l'animation
+
+        const updateCounter = () => {
+            const value = +counter.innerText;
+            if (value < target) {
+                counter.innerText = Math.ceil(value + increment);
+                setTimeout(updateCounter, 5);
+            } else {
+                counter.innerText = target;
+            }
+        };
+
+        updateCounter();
+    };
+
+    const handleScroll = () => {
+        const sectionTop = statsSection.offsetTop;
+        const sectionHeight = statsSection.offsetHeight;
+        const scrollPosition = window.scrollY + window.innerHeight;
+
+        // Déclencher l'animation quand la section devient visible
+        if (scrollPosition > sectionTop && scrollPosition < sectionTop + sectionHeight && !hasAnimated) {
+            counters.forEach(startCounter);
+            hasAnimated = true;
+            // Supprimer l'écouteur après l'animation pour optimiser
+            window.removeEventListener('scroll', handleScroll);
+        }
+    };
+
+    if (statsSection) {
+        window.addEventListener('scroll', handleScroll);
+        // Exécuter une fois au chargement au cas où l'utilisateur arrive en bas de page
+        handleScroll();
+    }
+});
