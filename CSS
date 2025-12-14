@@ -460,3 +460,19 @@ footer {
 .toggle .line3 {
     transform: rotate(45deg) translate(-5px, -6px);
 }
+/* --- STYLE DU LOGO (AJOUTÉ POUR L'IMAGE JPEG NOIRE ET OR) --- */
+.logo-img {
+    height: 50px; /* Taille idéale pour la navigation */
+    width: auto;
+}
+
+/* Ajustement pour que le logo noir reste visible sur la nav blanche */
+#navbar .logo img {
+    /* Le logo est noir et or, il ne change donc pas de couleur de fond. 
+       On s'assure qu'il est bien dimensionné. */
+}
+/* Le logo du footer est aussi dimensionné pour être plus petit */
+.logo-img-footer {
+    height: 40px;
+    margin-bottom: 10px;
+}
